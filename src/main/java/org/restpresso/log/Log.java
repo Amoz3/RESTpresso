@@ -15,7 +15,15 @@ public class Log {
         System.out.printf("%s[INFO] - %s%n", ANSI_BLUE, message);
     }
 
+    public static void info(String format, Object... args) {
+        System.out.printf("%s[INFO] - %s%n", ANSI_BLUE, String.format(format, args));
+    }
+
     public static void warn(String warning) {
         System.out.printf("%s[WARN] - %s%n", ANSI_RED, warning);
+    }
+
+    public static void warn(String format, Object... args) {
+        System.out.printf("%s[WARN] - %s%n", ANSI_RED, String.format(format, args));
     }
 }

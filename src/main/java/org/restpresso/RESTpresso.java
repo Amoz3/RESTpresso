@@ -20,8 +20,8 @@ public class RESTpresso {
         threadPool = Executors.newFixedThreadPool(threadCount);
     }
 
-    public RESTpresso addRoute(String route, RequestHandler handler) {
-        routes.put(route, handler);
+    public RESTpresso addGET(String route, RequestHandler handler) {
+        routes.put("GET" + route, handler);
         return this;
     }
 
@@ -32,10 +32,17 @@ public class RESTpresso {
             httpServer.createContext("/", new HttpHandler() {
                 @Override
                 public void handle(HttpExchange exchange) {
-                    String route = exchange.getRequestURI().toString();
-                    Log.info("Request made to " + route);
+                    String method = exchange.getRequestMethod();
+                    String path = exchange.getRequestURI().toString();
+                    // combine the two to filter endpoints by method
+
+                    String route = String.format("%s%s", method, path);
                     if (routes.containsKey(route)) {
+                        Log.info("%s request made to %s", method, route);
                         threadPool.submit(routes.get(route).getRunnable(exchange));
+                    } else {
+                        Log.warn("%s request made to %s & was not found", method, route);
+
                     }
                 }
             });
