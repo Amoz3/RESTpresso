@@ -8,7 +8,9 @@ public class Main {
         // simple hello world request
         new RESTpresso(32) // thread count
                 .addGET("/hello", new RequestHandler(req -> req.respond(200, "Hello world!")))
+                .addGET("/hi", req -> {
+                    req.respond(200, "hello :)");
+                })
                 .start(8080);
-
     }
 }
