@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.restpresso.handler.RequestHandler;
+import org.restpresso.http.HTTPRequest;
 import org.restpresso.log.Log;
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class RESTpresso {
                         threadPool.submit(routes.get(route).getRunnable(exchange));
                     } else {
                         Log.warn("%s request made to %s & was not found", method, route);
-
+                        new HTTPRequest(exchange).respond(404, "Endpoint not found");
                     }
                 }
             });
