@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class RESTpresso {
     RouteMap routes = new RouteMap();
@@ -61,6 +62,47 @@ public class RESTpresso {
         routes.put("PATCH" + route, handler);
         return this;
     }
+
+    public RESTpresso addGET(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("GET" + route, new RequestHandler(consumer));
+        return this;
+    }
+
+    public RESTpresso addPOST(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("POST" + route, new RequestHandler(consumer));
+        return this;
+    }
+
+    public RESTpresso addHEAD(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("HEAD" + route, new RequestHandler(consumer));
+        return this;
+    }
+
+    public RESTpresso addDELETE(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("DELETE" + route, new RequestHandler(consumer));
+        return this;
+    }
+
+    public RESTpresso addCONNECT(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("CONNECT" + route, new RequestHandler(consumer));
+        return this;
+    }
+
+    public RESTpresso addOPTIONS(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("OPTIONS" + route, new RequestHandler(consumer));
+        return this;
+    }
+
+    public RESTpresso addTRACE(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("TRACE" + route, new RequestHandler(consumer));
+        return this;
+    }
+
+    public RESTpresso addPATCH(String route, Consumer<HTTPRequest> consumer) {
+        routes.put("PATCH" + route, new RequestHandler(consumer));
+        return this;
+    }
+
 
     public void start(int port) {
         try {
