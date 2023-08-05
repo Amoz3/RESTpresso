@@ -26,11 +26,15 @@ public class HTTPRequest {
         return exchange.getRequestHeaders();
     }
 
-    public <E> E marshalBody(E pojo) {
+    public String getRequestBody() {
         InputStream inputStream = exchange.getRequestBody();
-        String body = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+        return new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                 .lines()
                 .collect(Collectors.joining("\n"));
+    }
+
+    public <E> E marshalBody(E pojo) {
+        String body = getRequestBody();
 
         return new Gson().fromJson(body, (Class<E>) pojo.getClass());
     }
