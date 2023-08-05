@@ -26,6 +26,40 @@ public class RESTpresso {
         return this;
     }
 
+    public RESTpresso addPOST(String route, RequestHandler handler) {
+        routes.put("POST" + route, handler);
+        return this;
+    }
+
+    public RESTpresso addHEAD(String route, RequestHandler handler) {
+        routes.put("HEAD" + route, handler);
+        return this;
+    }
+
+    public RESTpresso addDELETE(String route, RequestHandler handler) {
+        routes.put("DELETE" + route, handler);
+        return this;
+    }
+
+    public RESTpresso addCONNECT(String route, RequestHandler handler) {
+        routes.put("CONNECT" + route, handler);
+        return this;
+    }
+
+    public RESTpresso addOPTIONS(String route, RequestHandler handler) {
+        routes.put("OPTIONS" + route, handler);
+        return this;
+    }
+
+    public RESTpresso addTRACE(String route, RequestHandler handler) {
+        routes.put("TRACE" + route, handler);
+        return this;
+    }
+
+    public RESTpresso addPATCH(String route, RequestHandler handler) {
+        routes.put("PATCH" + route, handler);
+        return this;
+    }
     public void start(int port) {
         try {
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(port), 1);
