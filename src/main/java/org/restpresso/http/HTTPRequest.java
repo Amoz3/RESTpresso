@@ -35,7 +35,6 @@ public class HTTPRequest {
 
     public <E> E marshalBody(E pojo) {
         String body = getRequestBody();
-
         return new Gson().fromJson(body, (Class<E>) pojo.getClass());
     }
 

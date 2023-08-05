@@ -3,6 +3,7 @@ package org.restpresso;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpsServer;
 import org.restpresso.handler.RequestHandler;
 import org.restpresso.http.HTTPRequest;
 import org.restpresso.log.Log;
@@ -60,6 +61,7 @@ public class RESTpresso {
         routes.put("PATCH" + route, handler);
         return this;
     }
+
     public void start(int port) {
         try {
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(port), 1);
@@ -83,6 +85,34 @@ public class RESTpresso {
             });
 
             httpServer.start();
+        } catch (IOException e) {
+            Log.warn("Failed to start http server");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void startTLS(int port) {
+        try {
+            HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(port), 1);
+            httpsServer.createContext("/", new HttpHandler() {
+                @Override
+                public void handle(HttpExchange exchange) {
+                    String method = exchange.getRequestMethod();
+                    String path = exchange.getRequestURI().toString();
+                    // combine the two to filter endpoints by method
+
+                    String route = String.format("%s%s", method, path);
+                    if (routes.containsKey(route)) {
+                        Log.info("%s request made to %s", method, route);
+                        threadPool.submit(routes.get(route).getRunnable(exchange));
+                    } else {
+                        Log.warn("%s request made to %s & was not found", method, route);
+                        new HTTPRequest(exchange).respond(404, "Endpoint not found");
+                    }
+                }
+            });
+
+            httpsServer.start();
         } catch (IOException e) {
             Log.warn("Failed to start http server");
             throw new RuntimeException(e);
