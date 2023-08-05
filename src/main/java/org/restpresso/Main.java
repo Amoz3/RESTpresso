@@ -14,7 +14,6 @@ public class Main {
                     for (Map.Entry<String, List<String>> entry : req.getHeaders().entrySet()) {
                         Log.info("Header: %s Value %s", entry.getKey(), entry.getValue());
                     }
-
                     req.respond(200, "yup");
                 }))
                 .addGET("/penis", new RequestHandler(req -> {
