@@ -1,5 +1,6 @@
 package org.example;
 
+
 import org.restpresso.RESTpresso;
 import org.restpresso.handler.RequestHandler;
 
@@ -11,6 +12,6 @@ public class Main {
                 .addGET("/hi", req -> {
                     req.respond(200, "hello :)");
                 })
-                .start(8080);
+                .start(8088); // port, this method is blocking
     }
 }

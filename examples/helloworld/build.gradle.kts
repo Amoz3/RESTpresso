@@ -1,3 +1,3 @@
 dependencies {
-    examples(projects.resTpresso)
+    library(projects.restpresso)
 }
